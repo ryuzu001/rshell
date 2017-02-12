@@ -2,5 +2,7 @@
 
 using namespace std;
 int main(){
-    cout << "Hello world!" << endl;
+    string user_input;
+    cout << "$";
+    cin >> user_input;
 }

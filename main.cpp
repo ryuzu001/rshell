@@ -3,6 +3,6 @@
 using namespace std;
 int main(){
     string user_input;
-    cout << "$";
+    cout << "$ ";
     cin >> user_input;
 }

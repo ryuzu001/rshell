@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
+#include <cstdlib>
 
 using namespace std;
 int main(){
@@ -17,13 +18,25 @@ int main(){
     char * pch;  
     string delim = ";";    // delimiters for strtok
     
-    cout << "\nHere are your commands: \n";
+    cout << "Here are your commands: " << endl;
   
     pch = strtok (str,delim.c_str());      // break at every ';'
     while (pch != NULL){
         cout << pch << "\n";
         pch = strtok (NULL, delim.c_str());
     }
+    
+    /*reset pch for another go*/
+    strcpy(str, userInput.c_str());
+    pch = strtok (str,delim.c_str());
+    
+    cout << "Executing your commands: " << endl;
+    
+    while (pch != NULL){
+        system(pch);
+        pch = strtok(NULL, delim.c_str());
+    }
+    
     
     delete [] str;  //no memory leaks
     delete [] pch;

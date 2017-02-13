@@ -3,6 +3,8 @@
 #include <string.h>
 #include <cstdlib>
 
+#include "execute.cpp"
+
 using namespace std;
 int main(){
     string userInput;  
@@ -32,12 +34,9 @@ int main(){
     
     cout << "Executing your commands: " << endl;
     
-    while (pch != NULL){
-        system(pch);
-        pch = strtok(NULL, delim.c_str());
-    }
+    execute(pch,delim);
     
     
     delete [] str;  //no memory leaks
-    delete [] pch;
+    // delete [] pch;
 }

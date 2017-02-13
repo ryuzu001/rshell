@@ -1,3 +1,6 @@
+// STRICTLY FOR TESTING PURPOSES. WILL NOT BE INCLUDED IN THE FINAL PROJECT
+
+
 #include <iostream>
 #include <string.h>
 #include <cstdlib>

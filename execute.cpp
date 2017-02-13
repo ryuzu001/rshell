@@ -5,7 +5,7 @@
  
    for example, "echo hello there" or "ls -l". Multiple commands will need multiple execute calls.
    
-   will NOT work with echo hello there; ls -l
+   will NOT work with "echo hello there; ls -l"
 */
 
 using namespace std;

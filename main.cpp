@@ -27,19 +27,16 @@ int main(){
     
     strcpy(str, userInput.c_str());                 // copy string to char* (NOT CONST)
     
-    char * pch;  
-    string delim = " ";    // delimiters for strtok
-    
     // (COMMENTS)  Remove any text after a '#' character  //
     
-    char * pch2;
     string COMMENT = "#";
     
-    pch2 = strtok (str,COMMENT.c_str());      // break at every COMMENT (#)
-    
-    str = pch2;
+    str = strtok (str,COMMENT.c_str());      // break at every COMMENT (#)
     
     // Comments now removed
+    
+    char * pch;  
+    string delim = " ";    // delimiters for strtok    
   
     pch = strtok (str,delim.c_str());      // break at every delimiter
     while (pch != NULL){

@@ -29,8 +29,19 @@ int main(){
     
     char * pch;  
     string delim = " ";    // delimiters for strtok
+    
+    // (COMMENTS)  Remove any text after a '#' character  //
+    
+    char * pch2;
+    string COMMENT = "#";
+    
+    pch2 = strtok (str,COMMENT.c_str());      // break at every COMMENT (#)
+    
+    str = pch2;
+    
+    // Comments now removed
   
-    pch = strtok (str,delim.c_str());      // break at every ';' and ' '
+    pch = strtok (str,delim.c_str());      // break at every delimiter
     while (pch != NULL){
         // cout << pch << endl;
         toExecute.push_back(pch);

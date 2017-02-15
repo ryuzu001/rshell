@@ -1,6 +1,11 @@
 #include <unistd.h> //execvp
+#include <cstdio> //perror
+#include <string> //string
+#include "exitshell.h"
 
-void exit_shell(){
+exitshell::exitshell(){};
+
+void exitshell::exit_shell(){
     char * args[3];
     string arg1 = "echo";
     string arg2 = "exiting...";

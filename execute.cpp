@@ -1,5 +1,7 @@
 #include <vector>   //vector
 #include <unistd.h> //execvp
+#include <cstdio> //perror
+#include "execute.h"
 
 /* This will execute any ONE command given a vector of individual words in the command
  
@@ -10,7 +12,9 @@
 
 using namespace std;
 
-void execute(vector<char*> arg){
+execute::execute(){};
+
+void execute::executestatement(vector<char*> arg){
     char* args[arg.size() + 1];                // vector to array
                                                //      |
     for(unsigned i = 0; i < arg.size(); i++){  //      |

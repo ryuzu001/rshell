@@ -8,8 +8,8 @@
 #include <sys/wait.h>
 #include <vector>
 
-#include "execute.cpp"
-#include "exit_shell.cpp"
+#include "execute.h"
+#include "exitshell.h"
 
 
 using namespace std;
@@ -62,11 +62,13 @@ int main(){
     }
     
     if(toExecute.at(0) == exitStr){
-        exit_shell();
+        exitshell temp;
+        temp.exit_shell();
         exit(0);
     }
-    
-    execute(toExecute);
+    execute te;
+    te.executestatement(toExecute);
+    // te.executestatement(toExecute);
     
     delete [] str;  //no memory leaks
     // delete [] pch;

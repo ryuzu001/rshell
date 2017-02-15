@@ -8,7 +8,8 @@ class execute{
     public:
     int y;
     execute();
-    void executestatement(vector<char*>);
+    bool executeStatement(vector<char*>);
+    void exit_shell();
 };
 
 #endif

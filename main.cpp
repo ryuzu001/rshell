@@ -2,10 +2,11 @@
 #include <string.h>
 #include <cstdlib>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h>   //getenv
 #include <sys/types.h>
-#include <unistd.h>
+#include <unistd.h>   //getlogin
 #include <sys/wait.h>
+#include <cstddef>
 #include <vector>
 
 #include "execute.h"
@@ -14,16 +15,13 @@
 
 using namespace std;
 
+
 int main(){
+    
+  while(1){
     string exitStr = "exit";     //string to indicate exit shell
     string userInput;  
     vector<char*> toExecute;
-    
-    cout << "-----------------------\n";
-    cout << "|  Welcome to rshell  |\n";
-    cout << "|  Type any command   |\n";
-    cout << "| Type 'exit' to exit |\n";
-    cout << "-----------------------\n";
     
     //WILL NEED TO PUT THIS IN A LOOP LATER
     cout << "$ ";
@@ -72,4 +70,9 @@ int main(){
     
     delete [] str;  //no memory leaks
     // delete [] pch;
+  }
+    
+    
+    
+    
 }

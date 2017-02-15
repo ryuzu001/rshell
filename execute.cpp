@@ -1,6 +1,7 @@
 #include <vector>   //vector
 #include <unistd.h> //execvp
 #include <cstdio> //perror
+#include <cstdlib>
 #include "execute.h"
 
 /* This will execute any ONE command given a vector of individual words in the command
@@ -23,8 +24,23 @@ void execute::executestatement(vector<char*> arg){
     
     args[arg.size()] = NULL;  // final entry needs to be NULL
     
-    if( execvp (args [0],args) == -1){  //execute, with error checking
-        perror ("exec");
+    int pid = fork();
+    
+    if(pid == -1){
+        perror("fork");
+        exit(1);
     }
+    else if(pid == 0){ //child process
+        if( execvp (args [0],args) == -1){  //execute, with error checking
+            perror ("exec");
+            _exit(2); //end child
+        }
+        _exit(2);
+    }
+
+    
+    // if( execvp (args [0],args) == -1){  //execute, with error checking
+    //     perror ("exec");
+    // }
 
 }

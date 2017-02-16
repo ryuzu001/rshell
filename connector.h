@@ -1,13 +1,31 @@
+#include "execute.h"
 #ifndef CONNECTOR_H_
 #define CONNECTOR_H_
 
 using namespace std;
 
-/* for commands with ; || or && */
+/* for commands with || or && */
 
-class connector{
+class connector : public execute{
+    protected:
+     vector<char*> left;
+     vector<char*> right;
     public:
-    virtual vector<char*> executeStatement() = 0;
+     connector(vector<char*> l, vector<char*> r) : left(l), right(r) { }
+     virtual bool executeStatement() = 0;
 };
 
+
+class andOp : public connector {
+    public:
+     bool executeStatement();
+    
+};
+
+
+class orOp : public connector {
+    public:
+     bool executeStatement();
+    
+};
 #endif

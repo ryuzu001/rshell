@@ -15,10 +15,7 @@ bool andOp::executeStatement()
            return true;
        }
    }
-   else
-   {
-       return false;
-   }
+   return false;
 }
 
 bool orOp::executeStatement()
@@ -32,10 +29,7 @@ bool orOp::executeStatement()
             return true;
         }
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 

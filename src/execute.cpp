@@ -21,7 +21,9 @@ execute::execute(){}
 
 bool execute::executeStatement(vector<char*> arg){
     bool result = true;
-    char* args[arg.size() + 1];                // vector to array
+    char* args[1000];      // cause the -pedantic flag throws an error with the other declaration
+    
+    // char* args[vectorSize + 1];                // vector to array
                                                //      |
     for(unsigned i = 0; i < arg.size(); i++){  //      |
         args[i] = arg.at(i);                   //      |

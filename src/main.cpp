@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "execute.h"
+#include "connector.h"
 
 
 using namespace std;
@@ -68,6 +69,33 @@ bool hasSemicolon(string userInput){
     return false;
 }
 
+bool hasAnd(string userInput){
+    for(unsigned i = 0; i < userInput.size() - 1; ++i){
+        if(userInput.at(i) == '&' && userInput.at(i + 1) == '&'){
+            return true;
+            cout << "has and in it";
+        }
+    }
+    return false;
+}
+
+bool hasOr(string userInput){
+    for(unsigned i = 0; i < userInput.size() - 1; ++i){
+        if(userInput.at(i) == '|' && userInput.at(i + 1) == '|'){
+            return true;
+            cout << "has and in it";
+        }
+    }
+    return false;    
+}
+
+bool hasConnector(string userInput){
+    if(hasSemicolon(userInput) || hasAnd(userInput) || hasAnd(userInput)){
+        return true;
+    }
+    return false;
+}
+
 vector<char*> charstarToVector(char* str, string delim){
     vector<char*> result;
     char * pch = strtok (str, delim.c_str());
@@ -90,9 +118,17 @@ void displayShell(){
         vector<char*> toExecute;      // reset toExecute to empty
         getline(cin, userInput);
         
-        while(hasSemicolon(userInput)){
-            revisedInput = executeSemicolon(userInput, delim);
-            userInput = revisedInput;
+        while(hasConnector(userInput)){
+            if(hasSemicolon(userInput)){
+                revisedInput = executeSemicolon(userInput, delim);
+                userInput = revisedInput;
+            }
+            if(hasAnd(userInput)){
+                
+            }
+            if(hasOr(userInput)){
+                
+            }
         }
         
         char * str = new char[userInput.length() + 1];  // char array named str

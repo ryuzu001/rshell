@@ -61,7 +61,7 @@ void checkUserInput(vector<char*> input){
 //     return secondCommand;
 // }
 
-bool executeSemicolon(string input, string newInput, string delim){
+bool executeSemicolon(string input, string &newInput, string delim){
     execute te;
     int index = 0;    // incase of ending semicolon
     

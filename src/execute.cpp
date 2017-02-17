@@ -43,7 +43,7 @@ bool execute::executeStatement(vector<char*> arg){
             perror ("exec");
             _exit(2);     //end child
         }
-        _exit(2);    //every syscall requires perror
+        _exit(2);
     }
     else{ //parent process
     

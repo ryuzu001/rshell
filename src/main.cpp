@@ -34,7 +34,34 @@ void checkUserInput(vector<char*> input){
     }    
 }
 
-string executeSemicolon(string input, string delim){
+// string executeSemicolon(string input, string delim){
+//     execute te;
+//     int index = 0;    // incase of ending semicolon
+    
+//     for(unsigned i = 0; i < input.size(); ++i){
+//         if(input.at(i) == ';'){
+//             index = i;
+//             break;  //first semicolon only
+//         }
+//     }
+//     string firstCommand = input.substr(0, index);
+//     string secondCommand = input.substr(index + 1);
+    
+//     char * str = new char[firstCommand.length() + 1];
+//     strcpy(str, firstCommand.c_str()); 
+    
+//     vector<char*> com1 = charstarToVector(str, delim);
+    
+//     checkUserInput(com1);
+    
+//     te.executeStatement(com1);
+    
+//     delete[] str;
+    
+//     return secondCommand;
+// }
+
+bool executeSemicolon(string input, string newInput, string delim){
     execute te;
     int index = 0;    // incase of ending semicolon
     
@@ -54,11 +81,15 @@ string executeSemicolon(string input, string delim){
     
     checkUserInput(com1);
     
-    te.executeStatement(com1);
+    if(!(te.executeStatement(com1))){
+        return false;
+    }
     
     delete[] str;
     
-    return secondCommand;
+    newInput = secondCommand;
+    
+    return true;
 }
 
 bool hasSemicolon(string userInput){
@@ -125,7 +156,7 @@ void displayShell(){
         
         while(hasConnector(userInput)){
             if(hasSemicolon(userInput)){
-                revisedInput = executeSemicolon(userInput, delim);
+                executeSemicolon(userInput, revisedInput, delim);
                 userInput = revisedInput;
             }
             if(hasAnd(userInput)){

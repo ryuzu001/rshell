@@ -1,13 +1,57 @@
 #include "connector.h"
+#include "execute.h"
 using namespace std;
+
 
 
 bool andOp::executeStatement()
 {
+   execute temp;
    
+   if (temp.executeStatement(this->left))   
+   {
+       if(temp.executeStatement(this->right))
+       {
+           return true;
+       }
+   }
+   else
+   {
+       return false;
+   }
+}
+
+bool orOp::executeStatement()
+{
+    execute temp;
     
-    if (this->left.executeStatement() && this->right.execute::executeStatement())
+    if (!(temp.executeStatement(this->left)))
     {
-        return;
+        if(temp.executeStatement(this->right))
+        {
+            return true;
+        }
+    }
+    else
+    {
+        return false;
     }
 }
+
+
+bool semicolon::executeStatement()
+{
+    execute temp;
+    
+    temp.executeStatement(this->left);
+    if(temp.executeStatement(this->right))
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+
+
+

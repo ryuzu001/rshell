@@ -154,7 +154,7 @@ void displayShell(){
         vector<char*> toExecute;      // reset toExecute to empty
         getline(cin, userInput);
         
-        while(hasConnector(userInput)){
+        while(hasConnector(userInput)){   // input has ; || &&
             if(hasSemicolon(userInput)){
                 executeSemicolon(userInput, revisedInput, delim);
                 userInput = revisedInput;

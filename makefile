@@ -1,6 +1,6 @@
 CC=g++
 FLAGS=-Wall -Werror -ansi -pedantic
-EXEC=a.out
+EXEC=rshell
 
 all:
 	mkdir -p bin

@@ -41,6 +41,7 @@ string executeSemicolon(string input, string delim){
     for(unsigned i = 0; i < input.size(); ++i){
         if(input.at(i) == ';'){
             index = i;
+            break;  //first semicolon only
         }
     }
     string firstCommand = input.substr(0, index);
@@ -70,20 +71,24 @@ bool hasSemicolon(string userInput){
 }
 
 bool hasAnd(string userInput){
-    for(unsigned i = 0; i < userInput.size() - 1; ++i){
+    if(userInput.size() == 0){
+        return false;
+    }
+    for(unsigned i = 0; i < userInput.size() - 2; ++i){
         if(userInput.at(i) == '&' && userInput.at(i + 1) == '&'){
             return true;
-            cout << "has and in it";
         }
     }
     return false;
 }
 
 bool hasOr(string userInput){
-    for(unsigned i = 0; i < userInput.size() - 1; ++i){
+    if(userInput.size() == 0){
+        return false;
+    }
+    for(unsigned i = 0; i < userInput.size() - 2; ++i){
         if(userInput.at(i) == '|' && userInput.at(i + 1) == '|'){
             return true;
-            cout << "has and in it";
         }
     }
     return false;    

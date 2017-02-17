@@ -1,6 +1,6 @@
-#include <vector>   //vector
-#include <unistd.h> //execvp
-#include <cstdio> //perror
+#include <vector>   
+#include <unistd.h> 
+#include <cstdio> 
 #include <cstdlib>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -31,9 +31,9 @@ bool execute::executeStatement(vector<char*> arg){
     
     args[arg.size()] = NULL;  // final entry needs to be NULL
     
-    int pid = fork();
+    int pid = fork();    //RUN SYSCALL -->ERROR CHECK
     
-    if(pid == -1){  //failed to fork
+    if(pid == -1){       //failed to fork, error
         perror("fork");
         exit(1);
     }
@@ -41,10 +41,9 @@ bool execute::executeStatement(vector<char*> arg){
         if( execvp (args [0],args) == -1){  //execute, with error checking
             result = false;
             perror ("exec");
-            _exit(2); //end child
-            
+            _exit(2);     //end child
         }
-        _exit(2);   //won't compile without a number
+        _exit(2);    //every syscall requires perror
     }
     else{ //parent process
     
@@ -59,11 +58,6 @@ bool execute::executeStatement(vector<char*> arg){
             result = false;  // did not exit normally; return false
         }
     }
-
-    
-    // if( execvp (args [0],args) == -1){  //execute, with error checking
-    //     perror ("exec");
-    // }
     
     return result;
 

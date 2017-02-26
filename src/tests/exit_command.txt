@@ -1,0 +1,9 @@
+exit
+ls; exit
+ls; exit;
+echo hello && exit
+echo hello || exit
+echo hello; echo there || exit
+echo hello; echo there && exit
+echo hello #exit
+exit

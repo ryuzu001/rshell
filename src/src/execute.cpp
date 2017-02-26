@@ -23,7 +23,7 @@ bool execute::executeStatement(vector<char*> arg){
     bool result = true;
     char* args[1000];      // cause the -pedantic flag throws an error with the other declaration
     
-    // char* args[vectorSize + 1];             // vector to array
+    // char* args[vectorSize + 1];                // vector to array
                                                //      |
     for(unsigned i = 0; i < arg.size(); i++){  //      |
         args[i] = arg.at(i);                   //      |
@@ -31,36 +31,33 @@ bool execute::executeStatement(vector<char*> arg){
     
     args[arg.size()] = NULL;  // final entry needs to be NULL
     
-    
-
-    
     int pid = fork();    //RUN SYSCALL -->ERROR CHECK
-        
-        if(pid < 0){       //failed to fork, error
-            perror("fork");
-            exit(1);
+    
+    if(pid == -1){       //failed to fork, error
+        perror("fork");
+        exit(1);
+    }
+    else if(pid == 0){ //child process
+        if( execvp (args [0],args) == -1){  //execute, with error checking
+            result = false;
+            perror ("exec");
+            _exit(2);     //end child
         }
-        else if(pid == 0){ //child process
-            if( execvp (args [0],args) < 0){  //execute, with error checking
-                result = false;
-                perror ("exec");
-                _exit(2);     //end child
-            }
-            _exit(2);
+        _exit(2);
+    }
+    else{ //parent process
+    
+        /* WIFEXITED(s)  Evaluates to a non-zero value if status 
+           was returned for a child process that exited normally.*/
+           
+        int status;
+        if(waitpid(pid, &status, 0) == -1){  //execute
+            perror("waitpid");
         }
-        else{ //parent process
-        
-            /* WIFEXITED(s)  Evaluates to a non-zero value if status 
-               was returned for a child process that exited normally.*/
-               
-            int status;
-            if(waitpid(pid, &status, 0) < 0){  //execute
-                perror("waitpid");
-            }
-            if(WEXITSTATUS(status) != 0){    //need to check if child process exited
-                result = false;  // did not exit normally; return false
-            }
+        if(WEXITSTATUS(status) != 0){    //need to check if child process exited
+            result = false;  // did not exit normally; return false
         }
+    }
     
     return result;
 

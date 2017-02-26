@@ -1,0 +1,6 @@
+echo hello there
+ls -l
+mkdir temp
+rm -r temp
+ls -al
+exit

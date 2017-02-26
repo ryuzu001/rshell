@@ -1,8 +1,0 @@
-ls #-l -a; echo hello
-git status # echo hello
-ls;ls;ls;#ls;ls;ls;ls
-#echo hello
-# echo hello
-#exit
-echo hello
-exit

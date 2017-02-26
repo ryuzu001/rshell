@@ -106,6 +106,14 @@ bool hasOr(string userInput){
     return false;  
 }
 
+bool hasParenthesis(string userInput)
+{
+    if (userInput.find("(") != string::npos) {
+        return true;
+    }
+    return false;
+}
+
 bool hasConnector(string userInput){
     if(hasSemicolon(userInput) || hasAnd(userInput) || hasOr(userInput)){
         return true;
@@ -171,29 +179,111 @@ void executeVector(vector<string> v){
     string connector = "semicolon";
     
     for(unsigned i = 0; i < v.size(); i++){
-        vector<char*> singleCommand;        // clear singleCommand
-        if(hasSemicolon(v.at(i))){
-            string temp;                                  //get rid of semicolon
-            temp = v.at(i).substr(0, v.at(i).length() - 1);
-            v.at(i) = temp;
-            while(placeholder <= i){       // <= because the ; will be at the end of a statement.
-                char* temp = new char[v.at(placeholder).length() + 1];
-                strcpy(temp, v.at(placeholder).c_str());
-                singleCommand.push_back(temp);
+        vector<char*> singleCommand;// clear singleCommand
+        
+            if(hasSemicolon(v.at(i))){
+                string temp;                                  //get rid of semicolon
+                temp = v.at(i).substr(0, v.at(i).length() - 1);
+                v.at(i) = temp;
+                while(placeholder <= i){       // <= because the ; will be at the end of a statement.
+                    char* temp = new char[v.at(placeholder).length() + 1];
+                    strcpy(temp, v.at(placeholder).c_str());
+                    singleCommand.push_back(temp);
+                    placeholder++;
+                }
+                 //execute singleCommand
+                if(connector == "semicolon"){
+                    if(e.executeStatement(singleCommand)){
+                        previousCommandSucessfull = true;
+                    }
+                    else{
+                        previousCommandSucessfull = false;
+                    }
+                }
+                if(connector == "and"){
+                    if(previousCommandSucessfull){
+                        //execute
+                        if(e.executeStatement(singleCommand)){
+                            previousCommandSucessfull = true;
+                        }
+                        else{
+                            previousCommandSucessfull = false;
+                        }
+                    }
+                    else{
+                        //dont
+                    }
+                }
+                if(connector == "or"){
+                    if(previousCommandSucessfull){
+                        
+                    }
+                    else{
+                        if(e.executeStatement(singleCommand)){
+                            previousCommandSucessfull = true;
+                        }
+                        else{
+                            previousCommandSucessfull = false;
+                        }
+                    }
+                }
+                connector = "semicolon";
+            }
+            else if(isAnd(v.at(i))){
+                // The string will be "&&" so there will be a before and after to execute. i is the index of &&
+                while(placeholder < i){     //before
+                    char* temp = new char[v.at(placeholder).length() + 1];
+                    strcpy(temp, v.at(placeholder).c_str());
+                    singleCommand.push_back(temp);
+                    placeholder++;
+                }
+                placeholder ++;
+                if(connector == "semicolon"){
+                    if(e.executeStatement(singleCommand)){
+                        previousCommandSucessfull = true;
+                    }
+                    else{
+                        previousCommandSucessfull = false;
+                    }
+                }
+                if(connector == "and"){
+                    if(previousCommandSucessfull){
+                        //execute
+                        if(e.executeStatement(singleCommand)){
+                            previousCommandSucessfull = true;
+                        }
+                        else{
+                            previousCommandSucessfull = false;
+                        }
+                    }
+                    else{
+                        //dont
+                    }
+                }
+                if(connector == "or"){
+                    if(previousCommandSucessfull){
+                        
+                    }
+                    else{
+                        if(e.executeStatement(singleCommand)){
+                            previousCommandSucessfull = true;
+                        }
+                        else{
+                            previousCommandSucessfull = false;
+                        }
+                    }
+                }
+                connector = "and";
+            }
+            else if(hasOr(v.at(i))){
+                while(placeholder < i){
+                    char* temp = new char[v.at(placeholder).length() + 1];
+                    strcpy(temp, v.at(placeholder).c_str());
+                    singleCommand.push_back(temp);
+                    placeholder++;
+                }
                 placeholder++;
-            }
-             //execute singleCommand
-            if(connector == "semicolon"){
-                if(e.executeStatement(singleCommand)){
-                    previousCommandSucessfull = true;
-                }
-                else{
-                    previousCommandSucessfull = false;
-                }
-            }
-            if(connector == "and"){
-                if(previousCommandSucessfull){
-                    //execute
+                if(connector == "semicolon"){
                     if(e.executeStatement(singleCommand)){
                         previousCommandSucessfull = true;
                     }
@@ -201,110 +291,29 @@ void executeVector(vector<string> v){
                         previousCommandSucessfull = false;
                     }
                 }
-                else{
-                    //dont
-                }
-            }
-            if(connector == "or"){
-                if(previousCommandSucessfull){
-                    
-                }
-                else{
-                    if(e.executeStatement(singleCommand)){
-                        previousCommandSucessfull = true;
+                if(connector == "and"){
+                    if(previousCommandSucessfull){
+                        if(e.executeStatement(singleCommand)){
+                            previousCommandSucessfull = true;
+                        }
+                        else{
+                            previousCommandSucessfull = false;
+                        }
                     }
+                }
+                if(connector == "or"){
+                    if(previousCommandSucessfull){}
                     else{
-                        previousCommandSucessfull = false;
+                        if(e.executeStatement(singleCommand)){
+                            previousCommandSucessfull = true;
+                        }
+                        else{
+                            previousCommandSucessfull = false;
+                        }
                     }
                 }
+                connector = "or";
             }
-            connector = "semicolon";
-        }
-        else if(isAnd(v.at(i))){
-            // The string will be "&&" so there will be a before and after to execute. i is the index of &&
-            while(placeholder < i){     //before
-                char* temp = new char[v.at(placeholder).length() + 1];
-                strcpy(temp, v.at(placeholder).c_str());
-                singleCommand.push_back(temp);
-                placeholder++;
-            }
-            placeholder ++;
-            if(connector == "semicolon"){
-                if(e.executeStatement(singleCommand)){
-                    previousCommandSucessfull = true;
-                }
-                else{
-                    previousCommandSucessfull = false;
-                }
-            }
-            if(connector == "and"){
-                if(previousCommandSucessfull){
-                    //execute
-                    if(e.executeStatement(singleCommand)){
-                        previousCommandSucessfull = true;
-                    }
-                    else{
-                        previousCommandSucessfull = false;
-                    }
-                }
-                else{
-                    //dont
-                }
-            }
-            if(connector == "or"){
-                if(previousCommandSucessfull){
-                    
-                }
-                else{
-                    if(e.executeStatement(singleCommand)){
-                        previousCommandSucessfull = true;
-                    }
-                    else{
-                        previousCommandSucessfull = false;
-                    }
-                }
-            }
-            connector = "and";
-        }
-        else if(hasOr(v.at(i))){
-            while(placeholder < i){
-                char* temp = new char[v.at(placeholder).length() + 1];
-                strcpy(temp, v.at(placeholder).c_str());
-                singleCommand.push_back(temp);
-                placeholder++;
-            }
-            placeholder++;
-            if(connector == "semicolon"){
-                if(e.executeStatement(singleCommand)){
-                    previousCommandSucessfull = true;
-                }
-                else{
-                    previousCommandSucessfull = false;
-                }
-            }
-            if(connector == "and"){
-                if(previousCommandSucessfull){
-                    if(e.executeStatement(singleCommand)){
-                        previousCommandSucessfull = true;
-                    }
-                    else{
-                        previousCommandSucessfull = false;
-                    }
-                }
-            }
-            if(connector == "or"){
-                if(previousCommandSucessfull){}
-                else{
-                    if(e.executeStatement(singleCommand)){
-                        previousCommandSucessfull = true;
-                    }
-                    else{
-                        previousCommandSucessfull = false;
-                    }
-                }
-            }
-            connector = "or";
-        }
     }
     vector<char*> lastCommand; 
 

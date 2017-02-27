@@ -11,6 +11,7 @@
 
 #include "execute.h"
 #include "connector.h"
+#include "test.h"
 
 
 using namespace std;
@@ -400,6 +401,18 @@ bool executeSemicolon(string input, string &newInput, string delim){
     return true;
 }
 
+vector<char*> stringToCharVector(string s){
+    vector<char*> temp;
+    char* cstr = new char[1000];
+    strcpy(cstr, s.c_str());
+    char* pch;
+    pch = strtok(cstr, " ");
+    while(pch != NULL){
+        temp.push_back(pch);
+        pch = strtok(NULL, " ");
+    }
+    return temp;
+}
 
 bool executeAnd(string input, string &newInput, string delim){
     unsigned i;
@@ -548,8 +561,18 @@ void displayShell2(){
 }
 
 int main(){
-    displayShell2();      /* Since we cannot call main(), I needed another 
+    // displayShell2();     
+                            /* Since we cannot call main(), I needed another 
                             function to call itself, so I made main just call
-                            that function.
-                         */
+                            that function.*/
+    cout << "enter string\n";
+    string str;
+    getline(cin, str);
+    vector<char*>ayy = stringToCharVector(str);
+    // cout << "you entered: \n";
+    // for(unsigned i = 0; i < ayy.size(); i++){
+    //     cout << ayy.at(i) << "\n";
+    // }
+    test temp;
+    temp.executeStatement(ayy);
 }

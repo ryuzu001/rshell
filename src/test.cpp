@@ -1,53 +1,115 @@
-// // STRICTLY FOR TESTING PURPOSES. WILL NOT BE INCLUDED IN THE FINAL PROJECT
+#include <iostream>
+#include <string.h>
+#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>   //stat()
+#include <unistd.h>
+#include <vector>
 
+#include "test.h"
 
-// #include <iostream>
-// #include <string.h>
-// #include <cstdlib>
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <sys/types.h>
-// #include <unistd.h>
-// #include <sys/wait.h>
-// #include <vector>
+using namespace std;
 
-// using namespace std;
+test::test() {}    //constuctor
 
-// int main(){
+bool test::executeStatement(vector<char*> v){
+    bool result;
+    struct stat st;
     
-//     // char* args[3];
-//     // string ls = "ls -l";
-//     // string dash_l = "";
+    bool flagE = true;   //flags
+    bool flagF = false;
+    bool flagD = false;
+    bool noFlags = true;
+    char* filePath;       //file path
     
-//     // args[0] = (char*) ls.c_str();
-//     // args[1] = (char*) dash_l.c_str();
-//     // args[2] = NULL;
+    if(v.size() == 0){
+        printf("this is not a test command!");
+        return false;
+    }
+    // if(v.at(0) == "test"){
+    //     printf("this is a test command!");
+    // }
+    // if(v.at(0) == "["){
+    //     printf("this is a test command!");
+    // }
     
-//     // // for(int x = 0; x < 2; x++){
-//     // //     cout << args[x] << " ";
-//     // // }
+    v.erase(v.begin());         //erase first element, the "[" or "test"
     
-//     // if( execvp (args [0],args) == -1){
-//     //     perror ("exec");
-//     // }
+    string strE = "-e";
+    string strF = "-f";
+    string strD = "-d";
     
-//     string userInput = "HELLO THERE MY NAME IS RYAN#YOOOOOOOOOO";
-//     vector<char*> toExecute;
+    char* dashE = new char[1000];
+    char* dashF = new char[1000];
+    char* dashD = new char[1000];
     
-//     char * str = new char[userInput.length() + 1];  // char array named str
+    strcpy(dashE, strE.c_str());
+    strcpy(dashF, strF.c_str());
+    strcpy(dashD, strD.c_str());
     
-//     strcpy(str, userInput.c_str());                 // copy string to char* (NOT CONST)
+    while(1){           // find flags
+        char* pch;
+        pch = strchr(v.at(0), '/');
+        if(!strcmp(v.at(0), dashE)){
+            noFlags = false;
+            flagE = true;
+        }
+        else if(!strcmp(v.at(0), dashF)){
+            noFlags = false;
+            flagF = true;
+        }
+        else if(!strcmp(v.at(0), dashD)){
+            noFlags = false;
+            flagD = true;
+        }
+        else if(pch != NULL){                 //  "/" is found in the char* at v.at(0)
+            break;
+        }
+        else{
+            printf("invalid flag: %s\n", v.at(0));
+        }
+        v.erase(v.begin());
+    }
+    if(noFlags){
+        flagE = true;
+    }
+    filePath = v.at(0);
+    // cout << "this is the filePath: " << filePath << endl;
+    // cout << "with\n";
+    // if(flagE){
+    //     cout << "flag E\n";
+    // }
+    // if(flagF){
+    //     cout << "flag F\n";
+    // }
+    // if(flagD){
+    //     cout << "flag D\n";
+    // }
     
-//     printf("Before: %s\n", str);
+    // now everything is set up, flags accounted for and filePath accounted for.
     
-//     char * pch2;  
-//     string delim = "#";    // delimiters for strtok
-  
-//     pch2 = strtok (str,delim.c_str());      // break at every delimiter
-//     toExecute.push_back(pch2);
-//     cout << "After: ";
-//     for(unsigned int x = 0; x < toExecute.size(); x++){
-//         cout << toExecute.at(x) << " ";
-//     }
+    if(flagE){
+        result = true;
+    }
     
-// }
+    if(stat(filePath, &st)){               // exists
+        if(!flagF){                          // isreg = registry (file)
+            result = S_ISREG(st.st_mode);
+        }
+        else if(!flagD){                     // isdir = directory
+            result = S_ISDIR(st.st_mode);
+        }
+        else{ 
+            result = false;     // does not exist, -e fails
+        }
+    }
+    if(result){
+        printf("(True)");
+    }
+    else{
+        printf("(False)");
+    }
+    return result;
+}

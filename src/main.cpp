@@ -121,6 +121,8 @@ bool hasConnector(string userInput){
     return false;
 }
 
+
+
 bool isConnector(string i){
     if(i == ";"){
         return true;
@@ -167,6 +169,51 @@ vector<string> parseUI(string input){
     
 }
 
+
+
+vector<vector<unsigned> > findOpenParentheses(vector<string> v)
+{
+    vector<vector<unsigned> > toReturn(v.size()); //initialize vector to 0 parentheses for entire v
+    for (unsigned i = 0; i < v.size(); ++i)
+    {
+        for (unsigned j = 0; j < v.at(i).length(); ++j)
+        {
+            if(v.at(i).at(j) == '(')
+            {
+                toReturn.at(i).push_back(j);
+            }
+        }
+    }
+    return toReturn;
+}
+
+
+
+int findClosed(vector<string> v, unsigned vIndex)
+{
+    int count = 1;
+    for(unsigned i = vIndex; i < v.size(); ++i)
+    {
+        for(unsigned j =  1; j < v.at(i).size(); j++)
+        {
+            if(v.at(i).at(j) == '(')
+            {
+                count++;
+            }
+            if(v.at(i).at(j) == ')')
+            {
+                count--;
+            }
+            if(count == 0)
+            {
+                return i;
+            }
+        }
+    }
+    return 1; //needs to throw error, not enough parentheses
+}
+
+
 void executeVector(vector<string> v){
     if(v.at(0) == "&&" || v.at(0) == "||"){
         printf("error, no first argument");
@@ -174,116 +221,90 @@ void executeVector(vector<string> v){
     }
     bool previousCommandSucessfull = true;
     vector<char*> secondCommand;
+    vector<vector<unsigned> > parentheses;
     execute e;
     unsigned int placeholder = 0;
     string connector = "semicolon";
     
+    parentheses = findOpenParentheses(v);
+    
+    
+    
     for(unsigned i = 0; i < v.size(); i++){
         vector<char*> singleCommand;// clear singleCommand
-        
-            if(hasSemicolon(v.at(i))){
-                string temp;                                  //get rid of semicolon
-                temp = v.at(i).substr(0, v.at(i).length() - 1);
-                v.at(i) = temp;
-                while(placeholder <= i){       // <= because the ; will be at the end of a statement.
-                    char* temp = new char[v.at(placeholder).length() + 1];
-                    strcpy(temp, v.at(placeholder).c_str());
-                    singleCommand.push_back(temp);
-                    placeholder++;
-                }
-                 //execute singleCommand
-                if(connector == "semicolon"){
-                    if(e.executeStatement(singleCommand)){
-                        previousCommandSucessfull = true;
-                    }
-                    else{
-                        previousCommandSucessfull = false;
-                    }
-                }
-                if(connector == "and"){
-                    if(previousCommandSucessfull){
-                        //execute
-                        if(e.executeStatement(singleCommand)){
-                            previousCommandSucessfull = true;
-                        }
-                        else{
-                            previousCommandSucessfull = false;
-                        }
-                    }
-                    else{
-                        //dont
-                    }
-                }
-                if(connector == "or"){
-                    if(previousCommandSucessfull){
-                        
-                    }
-                    else{
-                        if(e.executeStatement(singleCommand)){
-                            previousCommandSucessfull = true;
-                        }
-                        else{
-                            previousCommandSucessfull = false;
-                        }
-                    }
-                }
-                connector = "semicolon";
+        if(hasParenthesis(v.at(i)))
+        {
+            vector<string> subExec; //clear vector of strings
+            int index = i;
+            int closedParen = findClosed(v, i);
+            while(index <= closedParen)
+            {
+                subExec.push_back(v.at(index));
+                placeholder += subExec.back().size();
+                index++;
             }
-            else if(isAnd(v.at(i))){
-                // The string will be "&&" so there will be a before and after to execute. i is the index of &&
-                while(placeholder < i){     //before
-                    char* temp = new char[v.at(placeholder).length() + 1];
-                    strcpy(temp, v.at(placeholder).c_str());
-                    singleCommand.push_back(temp);
-                    placeholder++;
-                }
-                placeholder ++;
-                if(connector == "semicolon"){
-                    if(e.executeStatement(singleCommand)){
-                        previousCommandSucessfull = true;
-                    }
-                    else{
-                        previousCommandSucessfull = false;
-                    }
-                }
-                if(connector == "and"){
-                    if(previousCommandSucessfull){
-                        //execute
-                        if(e.executeStatement(singleCommand)){
-                            previousCommandSucessfull = true;
-                        }
-                        else{
-                            previousCommandSucessfull = false;
-                        }
-                    }
-                    else{
-                        //dont
-                    }
-                }
-                if(connector == "or"){
-                    if(previousCommandSucessfull){
-                        
-                    }
-                    else{
-                        if(e.executeStatement(singleCommand)){
-                            previousCommandSucessfull = true;
-                        }
-                        else{
-                            previousCommandSucessfull = false;
-                        }
-                    }
-                }
-                connector = "and";
+            for(int p = 0; p < subExec.size(); ++p)
+            {
+                cout << subExec.at(p);
             }
-            else if(hasOr(v.at(i))){
-                while(placeholder < i){
-                    char* temp = new char[v.at(placeholder).length() + 1];
-                    strcpy(temp, v.at(placeholder).c_str());
-                    singleCommand.push_back(temp);
-                    placeholder++;
+            subExec.erase(subExec.begin()); //should remove first parenthesis
+            subExec.erase(subExec.end());// should remove corresponding parenthesis
+            for(int p = 0; p < subExec.size(); ++p)
+            {
+                cout << subExec.at(p);
+            }
+            
+            
+            
+            if(connector == "semicolon"){
+                executeVector(subExec); //causes seg fault
+                previousCommandSucessfull = true;
+            }
+            if(connector == "and"){
+                if(previousCommandSucessfull){
+                    executeVector(subExec);
+                    previousCommandSucessfull = true;
                 }
+                else{
+                    previousCommandSucessfull = false;
+                }
+            }
+            if(connector == "or"){
+                if(previousCommandSucessfull){
+                    previousCommandSucessfull = false;
+                }
+                else{
+                    executeVector(subExec);
+                    previousCommandSucessfull = true;
+                }
+            }
+            
+            
+            
+            
+        }
+        else if(hasSemicolon(v.at(i))){
+            string temp;                                  //get rid of semicolon
+            temp = v.at(i).substr(0, v.at(i).length() - 1);
+            v.at(i) = temp;
+            while(placeholder <= i){       // <= because the ; will be at the end of a statement.
+                char* temp = new char[v.at(placeholder).length() + 1];
+                strcpy(temp, v.at(placeholder).c_str());
+                singleCommand.push_back(temp);
                 placeholder++;
-                if(connector == "semicolon"){
+            }
+             //execute singleCommand
+            if(connector == "semicolon"){
+                if(e.executeStatement(singleCommand)){
+                    previousCommandSucessfull = true;
+                }
+                else{
+                    previousCommandSucessfull = false;
+                }
+            }
+            if(connector == "and"){
+                if(previousCommandSucessfull){
+                    //execute
                     if(e.executeStatement(singleCommand)){
                         previousCommandSucessfull = true;
                     }
@@ -291,29 +312,110 @@ void executeVector(vector<string> v){
                         previousCommandSucessfull = false;
                     }
                 }
-                if(connector == "and"){
-                    if(previousCommandSucessfull){
-                        if(e.executeStatement(singleCommand)){
-                            previousCommandSucessfull = true;
-                        }
-                        else{
-                            previousCommandSucessfull = false;
-                        }
-                    }
+                else{
+                    //dont
                 }
-                if(connector == "or"){
-                    if(previousCommandSucessfull){}
-                    else{
-                        if(e.executeStatement(singleCommand)){
-                            previousCommandSucessfull = true;
-                        }
-                        else{
-                            previousCommandSucessfull = false;
-                        }
-                    }
-                }
-                connector = "or";
             }
+            if(connector == "or"){
+                if(previousCommandSucessfull){
+                    
+                }
+                else{
+                    if(e.executeStatement(singleCommand)){
+                        previousCommandSucessfull = true;
+                    }
+                    else{
+                        previousCommandSucessfull = false;
+                    }
+                }
+            }
+            connector = "semicolon";
+        }
+        else if(isAnd(v.at(i))){
+            // The string will be "&&" so there will be a before and after to execute. i is the index of &&
+            while(placeholder < i){     //before
+                char* temp = new char[v.at(placeholder).length() + 1];
+                strcpy(temp, v.at(placeholder).c_str());
+                singleCommand.push_back(temp);
+                placeholder++;
+            }
+            placeholder ++;
+            if(connector == "semicolon"){
+                if(e.executeStatement(singleCommand)){
+                    previousCommandSucessfull = true;
+                }
+                else{
+                    previousCommandSucessfull = false;
+                }
+            }
+            if(connector == "and"){
+                if(previousCommandSucessfull){
+                    //execute
+                    if(e.executeStatement(singleCommand)){
+                        previousCommandSucessfull = true;
+                    }
+                    else{
+                        previousCommandSucessfull = false;
+                    }
+                }
+                else{
+                    //dont
+                }
+            }
+            if(connector == "or"){
+                if(previousCommandSucessfull){
+                    
+                }
+                else{
+                    if(e.executeStatement(singleCommand)){
+                        previousCommandSucessfull = true;
+                    }
+                    else{
+                        previousCommandSucessfull = false;
+                    }
+                }
+            }
+            connector = "and";
+        }
+        else if(hasOr(v.at(i))){
+            while(placeholder < i){
+                char* temp = new char[v.at(placeholder).length() + 1];
+                strcpy(temp, v.at(placeholder).c_str());
+                singleCommand.push_back(temp);
+                placeholder++;
+            }
+            placeholder++;
+            if(connector == "semicolon"){
+                if(e.executeStatement(singleCommand)){
+                    previousCommandSucessfull = true;
+                }
+                else{
+                    previousCommandSucessfull = false;
+                }
+            }
+            if(connector == "and"){
+                if(previousCommandSucessfull){
+                    if(e.executeStatement(singleCommand)){
+                        previousCommandSucessfull = true;
+                    }
+                    else{
+                        previousCommandSucessfull = false;
+                    }
+                }
+            }
+            if(connector == "or"){
+                if(previousCommandSucessfull){}
+                else{
+                    if(e.executeStatement(singleCommand)){
+                        previousCommandSucessfull = true;
+                    }
+                    else{
+                        previousCommandSucessfull = false;
+                    }
+                }
+            }
+            connector = "or";
+        }
     }
     vector<char*> lastCommand; 
 

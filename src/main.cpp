@@ -561,18 +561,18 @@ void displayShell2(){
 }
 
 int main(){
-    // displayShell2();     
+    displayShell2();     
                             /* Since we cannot call main(), I needed another 
                             function to call itself, so I made main just call
                             that function.*/
-    cout << "enter string\n";
-    string str;
-    getline(cin, str);
-    vector<char*>ayy = stringToCharVector(str);
-    // cout << "you entered: \n";
-    // for(unsigned i = 0; i < ayy.size(); i++){
-    //     cout << ayy.at(i) << "\n";
-    // }
-    test temp;
-    temp.executeStatement(ayy);
+    // cout << "enter string\n";
+    // string str;
+    // getline(cin, str);
+    // vector<char*>ayy = stringToCharVector(str);
+    // // cout << "you entered: \n";
+    // // for(unsigned i = 0; i < ayy.size(); i++){
+    // //     cout << ayy.at(i) << "\n";
+    // // }
+    // test temp;
+    // temp.executeStatement(ayy);
 }

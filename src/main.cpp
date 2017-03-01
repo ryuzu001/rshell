@@ -11,6 +11,7 @@
 
 #include "execute.h"
 #include "connector.h"
+#include "test.h"
 
 
 using namespace std;
@@ -121,8 +122,6 @@ bool hasConnector(string userInput){
     return false;
 }
 
-
-
 bool isConnector(string i){
     if(i == ";"){
         return true;
@@ -171,6 +170,7 @@ vector<string> parseUI(string input){
 
 
 
+
 vector<vector<unsigned> > findOpenParentheses(vector<string> v)
 {
     vector<vector<unsigned> > toReturn(v.size()); //initialize vector to 0 parentheses for entire v
@@ -212,6 +212,7 @@ int findClosed(vector<string> v, unsigned vIndex)
     }
     return 1; //needs to throw error, not enough parentheses
 }
+
 
 
 void executeVector(vector<string> v){
@@ -293,6 +294,9 @@ void executeVector(vector<string> v){
             
         }
         else if(hasSemicolon(v.at(i))){
+    for(unsigned i = 0; i < v.size(); i++){
+        vector<char*> singleCommand;        // clear singleCommand
+        if(hasSemicolon(v.at(i))){
             string temp;                                  //get rid of semicolon
             temp = v.at(i).substr(0, v.at(i).length() - 1);
             v.at(i) = temp;
@@ -520,6 +524,18 @@ bool executeSemicolon(string input, string &newInput, string delim){
     return true;
 }
 
+vector<char*> stringToCharVector(string s){
+    vector<char*> temp;
+    char* cstr = new char[1000];
+    strcpy(cstr, s.c_str());
+    char* pch;
+    pch = strtok(cstr, " ");
+    while(pch != NULL){
+        temp.push_back(pch);
+        pch = strtok(NULL, " ");
+    }
+    return temp;
+}
 
 bool executeAnd(string input, string &newInput, string delim){
     unsigned i;
@@ -668,8 +684,18 @@ void displayShell2(){
 }
 
 int main(){
-    displayShell2();      /* Since we cannot call main(), I needed another 
+    displayShell2();     
+                            /* Since we cannot call main(), I needed another 
                             function to call itself, so I made main just call
-                            that function.
-                         */
+                            that function.*/
+    // cout << "enter string\n";
+    // string str;
+    // getline(cin, str);
+    // vector<char*>ayy = stringToCharVector(str);
+    // // cout << "you entered: \n";
+    // // for(unsigned i = 0; i < ayy.size(); i++){
+    // //     cout << ayy.at(i) << "\n";
+    // // }
+    // test temp;
+    // temp.executeStatement(ayy);
 }

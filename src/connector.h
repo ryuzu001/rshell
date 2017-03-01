@@ -1,5 +1,8 @@
 #include "execute.h"
+<<<<<<< HEAD
 #include <string>
+=======
+>>>>>>> refs/remotes/origin/tests
 #include <vector>
 #ifndef CONNECTOR_H_
 #define CONNECTOR_H_
@@ -12,10 +15,17 @@ class connector : public execute{
     protected:
      vector<char*> left;
      vector<char*> right;
+<<<<<<< HEAD
     public:
      connector();
      connector(vector<char*> l, vector<char*> r) : left(l), right(r) { }
      
+=======
+     vector<char*> connectorType;
+    public:
+     connector();
+     connector(vector<char*> l, vector<char*> r) : left(l), right(r) { }
+>>>>>>> refs/remotes/origin/tests
      virtual bool executeStatement() = 0;
 };
 

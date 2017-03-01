@@ -235,29 +235,38 @@ void executeVector(vector<string> v){
         if(hasParenthesis(v.at(i)))
         {
             vector<string> subExec; //clear vector of strings
-            int index = i;
-            int closedParen = findClosed(v, i);
-            while(index <= closedParen)
+            unsigned index = i;
+            unsigned closedParen = findClosed(v, i);
+            while(index <= closedParen) 
             {
                 subExec.push_back(v.at(index));
                 placeholder += subExec.back().size();
                 index++;
             }
-            for(int p = 0; p < subExec.size(); ++p)
+            
+            
+            for(unsigned p = 0; p < subExec.size(); ++p)
             {
-                cout << subExec.at(p);
+                cout << "before removing (): ";
+                cout << subExec.at(p); cout << endl;
             }
-            subExec.erase(subExec.begin()); //should remove first parenthesis
-            subExec.erase(subExec.end());// should remove corresponding parenthesis
-            for(int p = 0; p < subExec.size(); ++p)
+            
+            
+            //these will delete the last element in the vector, not parentheses. need to find them first.
+            subExec.at(0) = subExec.at(0).substr(1, subExec.at(0).size() - 1);//should remove first parenthesis
+            subExec.at(subExec.size() - 1) = subExec.at(subExec.size() - 1).substr(0, subExec.at(subExec.size() - 1).size() - 1);// should remove corresponding parenthesis
+            for(unsigned p = 0; p < subExec.size(); ++p)
             {
+                cout << "After removing (): ";
                 cout << subExec.at(p);
+                cout << endl;
             }
             
             
             
             if(connector == "semicolon"){
-                executeVector(subExec); //causes seg fault
+                cout << "263" << endl;
+                executeVector(subExec); 
                 previousCommandSucessfull = true;
             }
             if(connector == "and"){
@@ -279,7 +288,7 @@ void executeVector(vector<string> v){
                 }
             }
             
-            
+        //should be whatever was after the parentheses    
             
             
         }

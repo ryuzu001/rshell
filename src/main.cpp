@@ -289,7 +289,7 @@ void executeVector(vector<string> v){
                 }
             }
             
-        connector = //should be whatever was after the parentheses    
+        // connector = //should be whatever was after the parentheses    
             
             
         }

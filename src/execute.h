@@ -12,8 +12,4 @@ class execute{
     void exit_shell();
 };
 
-<<<<<<< HEAD
 #endif
-=======
-#endif
->>>>>>> refs/remotes/origin/tests

@@ -437,16 +437,6 @@ void executeVector(vector<string> v){
         lastCommand.push_back(temp); 
         t++;
     }
-    // cout << "Placeholder: " << placeholder;
-    // cout << "\nvsize" << v.size();
-    // cout << "lastCommand";
-    // for(unsigned x = 0; x < lastCommand.size();x++){
-    //     cout << lastCommand.at(x) << " ";
-    // }
-    // cout << endl << "v: \n";
-    // for(unsigned x = 0; x < v.size();x++){
-    //     cout << v.at(x) << " ";
-    // }
     if(connector == "semicolon"){
         e.executeStatement(lastCommand);
     }
@@ -651,7 +641,7 @@ void displayShell(){
 
 void displayShell2(){
     string comment = "#";        // character used to indicate comment
-    unsigned int commentIndex;
+    size_t commentIndex;
     string userInput;  
     string revisedInput;
     vector<string> v;
@@ -662,9 +652,8 @@ void displayShell2(){
         getline(cin, userInput);
         commentIndex = userInput.find(comment);
         if(commentIndex != string::npos){   //rid of comments
-            userInput.substr(0,commentIndex);
+            userInput = userInput.substr(0,commentIndex);
         }
-        
         if(hasConnector(userInput)){
             v = parseUI(userInput);
             checkUserInput2(v);

@@ -289,14 +289,12 @@ void executeVector(vector<string> v){
                 }
             }
             
-        //should be whatever was after the parentheses    
+        connector = //should be whatever was after the parentheses    
             
             
         }
+
         else if(hasSemicolon(v.at(i))){
-    for(unsigned i = 0; i < v.size(); i++){
-        vector<char*> singleCommand;        // clear singleCommand
-        if(hasSemicolon(v.at(i))){
             string temp;                                  //get rid of semicolon
             temp = v.at(i).substr(0, v.at(i).length() - 1);
             v.at(i) = temp;

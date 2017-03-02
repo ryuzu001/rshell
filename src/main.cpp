@@ -530,7 +530,7 @@ void displayShell(){
 
 void displayShell2(){
     string comment = "#";        // character used to indicate comment
-    unsigned int commentIndex;
+    size_t commentIndex;
     string userInput;  
     string revisedInput;
     vector<string> v;
@@ -541,9 +541,8 @@ void displayShell2(){
         getline(cin, userInput);
         commentIndex = userInput.find(comment);
         if(commentIndex != string::npos){   //rid of comments
-            userInput.substr(0,commentIndex);
+            userInput = userInput.substr(0,commentIndex);
         }
-        
         if(hasConnector(userInput)){
             v = parseUI(userInput);
             checkUserInput2(v);

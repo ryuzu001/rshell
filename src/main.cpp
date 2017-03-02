@@ -173,7 +173,7 @@ void executeVector(vector<string> v){
     
     for(unsigned i = 0; i < v.size(); i++){
         vector<char*> singleCommand;        // clear singleCommand
-        if(hasSemicolon(v.at(i))){
+        if(hasSemicolon(v.at(i))){     // example is "ls;"
             string temp;                                  //get rid of semicolon
             temp = v.at(i).substr(0, v.at(i).length() - 1);
             v.at(i) = temp;
@@ -316,16 +316,6 @@ void executeVector(vector<string> v){
         lastCommand.push_back(temp); 
         t++;
     }
-    // cout << "Placeholder: " << placeholder;
-    // cout << "\nvsize" << v.size();
-    // cout << "lastCommand";
-    // for(unsigned x = 0; x < lastCommand.size();x++){
-    //     cout << lastCommand.at(x) << " ";
-    // }
-    // cout << endl << "v: \n";
-    // for(unsigned x = 0; x < v.size();x++){
-    //     cout << v.at(x) << " ";
-    // }
     if(connector == "semicolon"){
         e.executeStatement(lastCommand);
     }

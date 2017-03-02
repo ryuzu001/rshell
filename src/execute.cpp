@@ -1,12 +1,16 @@
 #include <vector>   
 #include <unistd.h> 
 #include <cstdio> 
+#include <stdio.h>
+#include <string.h>
 #include <cstdlib>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <string>
 
 #include "execute.h"
 #include "exitshell.h"
+#include "test.h"
 
 /* This will execute any ONE command given a vector of individual words in the command
  
@@ -20,6 +24,20 @@ using namespace std;
 execute::execute(){}
 
 bool execute::executeStatement(vector<char*> arg){
+    char* test1 = new char[1000];
+    char* test2 = new char[1000];
+    
+    string t1 = "test";
+    string t2 = "[";
+    
+    strcpy(test1, t1.c_str());
+    strcpy(test2, t2.c_str());
+    
+    if(!strcmp(test1, arg.at(0)) || !strcmp(test2, arg.at(0))){
+        test exe;
+        return exe.executeStatement(arg);
+    }
+    
     bool result = true;
     char* args[1000];      // cause the -pedantic flag throws an error with the other declaration
     

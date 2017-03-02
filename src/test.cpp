@@ -86,7 +86,7 @@ bool test::executeStatement(vector<char*> v){
         flagD = true;
     }
     
-    cout << "filePath: " << filePath << endl;
+    // cout << "filePath: " << filePath << endl;
     
     // now everything is set up, flags accounted for and filePath accounted for.
     

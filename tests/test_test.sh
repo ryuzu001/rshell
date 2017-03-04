@@ -1,0 +1,1 @@
+../bin/rshell < test_test.txt

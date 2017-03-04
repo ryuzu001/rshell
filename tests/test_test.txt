@@ -1,0 +1,10 @@
+test -e /bin
+test -e /etc/passwd
+test -f /etc/passwd
+test -d /etc/passwd
+test -d /etc
+test -d /htsoueasthoea
+test /etc
+[ -f /bin/rshell ]
+[ /passwd ]
+[ -d /temp ]

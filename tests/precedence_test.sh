@@ -1,0 +1,1 @@
+../bin/rshell < precedence_test.txt

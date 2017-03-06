@@ -1,0 +1,15 @@
+(echo A && echo B) && (echo C && echo D)
+(echo A && echo B) || (echo C && echo D)
+(echo A && echo B); (echo C && echo D)
+(echo A || echo B); (echo C || echo D)
+(echo A || echo B) || (echo C || echo D)
+(echo A && echo B); echo D
+(echo A && echo B) || echo D
+(echo A && echo B) && echo D
+echo A && (echo B || echo C)
+echo A || (echo B && echo C)
+echo A; (echo B; echo C)
+(echo A && (echo B && echo C))
+(echo A || (echo B && echo C))
+((echo A && echo B); echo C)
+((echo A && echo B) && echo C) && echo D

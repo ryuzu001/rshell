@@ -17,6 +17,7 @@
 using namespace std;
 
 void displayShell();
+bool executeParenthesis(vector<string>, bool, string);
 vector<char*> charstarToVector(char*, string);
 
 void printInfo(){
@@ -114,6 +115,12 @@ bool hasParenthesis(string userInput)
     }
     return false;
 }
+bool hasClosingParenthesis(string u){
+    if(u.find(")") != string::npos){
+        return true;
+    }
+    return false;
+}
 
 bool hasConnector(string userInput){
     if(hasSemicolon(userInput) || hasAnd(userInput) || hasOr(userInput)){
@@ -170,7 +177,6 @@ vector<string> parseUI(string input){
 
 
 
-
 vector<vector<unsigned> > findOpenParentheses(vector<string> v)
 {
     vector<vector<unsigned> > toReturn(v.size()); //initialize vector to 0 parentheses for entire v
@@ -213,87 +219,96 @@ int findClosed(vector<string> v, unsigned vIndex)
     return 1; //needs to throw error, not enough parentheses
 }
 
+bool checkParenthesis(char* c){
+    if(strchr(c, '(') != NULL){
+        return true;
+    }
+    return false;
+}
 
-
-void executeVector(vector<string> v){
+bool executeVector(vector<string> v, bool previousCommandSucessfull, string connector){
     if(v.at(0) == "&&" || v.at(0) == "||"){
         printf("error, no first argument");
-        return;
+        return false;
     }
-    bool previousCommandSucessfull = true;
     vector<char*> secondCommand;
-    vector<vector<unsigned> > parentheses;
+    // bool previousCommandSucessfull = true;
+    // string connector = "semicolon";
+    // vector<vector<unsigned> > parentheses;
     execute e;
     unsigned int placeholder = 0;
-    string connector = "semicolon";
     
-    parentheses = findOpenParentheses(v);
+    // parentheses = findOpenParentheses(v);
     
     
     
     for(unsigned i = 0; i < v.size(); i++){
         vector<char*> singleCommand;// clear singleCommand
-        if(hasParenthesis(v.at(i)))
-        {
-            vector<string> subExec; //clear vector of strings
-            unsigned index = i;
-            unsigned closedParen = findClosed(v, i);
-            while(index <= closedParen) 
-            {
-                subExec.push_back(v.at(index));
-                placeholder += subExec.back().size();
-                index++;
-            }
+    //     if(hasParenthesis(v.at(i)))
+    //     {
+    //         vector<string> subExec; //clear vector of strings
+    //         unsigned index = i;
+    //         unsigned closedParen = findClosed(v, i);
+    //         while(index <= closedParen) 
+    //         {
+    //             subExec.push_back(v.at(index));
+    //             placeholder += subExec.back().size();
+    //             index++;
+    //         }
             
             
-            for(unsigned p = 0; p < subExec.size(); ++p)
-            {
-                cout << "before removing (): ";
-                cout << subExec.at(p); cout << endl;
-            }
+    //         for(unsigned p = 0; p < subExec.size(); ++p)
+    //         {
+    //             cout << "before removing (): ";
+    //             cout << subExec.at(p); cout << endl;
+    //         }
             
             
-            //these will delete the last element in the vector, not parentheses. need to find them first.
-            subExec.at(0) = subExec.at(0).substr(1, subExec.at(0).size() - 1);//should remove first parenthesis
-            subExec.at(subExec.size() - 1) = subExec.at(subExec.size() - 1).substr(0, subExec.at(subExec.size() - 1).size() - 1);// should remove corresponding parenthesis
-            for(unsigned p = 0; p < subExec.size(); ++p)
-            {
-                cout << "After removing (): ";
-                cout << subExec.at(p);
-                cout << endl;
-            }
+    //         //these will delete the last element in the vector, not parentheses. need to find them first.
+    //         subExec.at(0) = subExec.at(0).substr(1, subExec.at(0).size() - 1);//should remove first parenthesis
+    //         subExec.at(subExec.size() - 1) = subExec.at(subExec.size() - 1).substr(0, subExec.at(subExec.size() - 1).size() - 1);// should remove corresponding parenthesis
+    //         for(unsigned p = 0; p < subExec.size(); ++p)
+    //         {
+    //             cout << "After removing (): ";
+    //             cout << subExec.at(p);
+    //             cout << endl;
+    //         }
             
             
             
-            if(connector == "semicolon"){
-                cout << "263" << endl;
-                executeVector(subExec); 
-                previousCommandSucessfull = true;
-            }
-            if(connector == "and"){
-                if(previousCommandSucessfull){
-                    executeVector(subExec);
-                    previousCommandSucessfull = true;
-                }
-                else{
-                    previousCommandSucessfull = false;
-                }
-            }
-            if(connector == "or"){
-                if(previousCommandSucessfull){
-                    previousCommandSucessfull = false;
-                }
-                else{
-                    executeVector(subExec);
-                    previousCommandSucessfull = true;
-                }
-            }
+    //         if(connector == "semicolon"){
+    //             cout << "263" << endl;
+    //             executeVector(subExec); 
+    //             previousCommandSucessfull = true;
+    //         }
+    //         if(connector == "and"){
+    //             if(previousCommandSucessfull){
+    //                 executeVector(subExec);
+    //                 previousCommandSucessfull = true;
+    //             }
+    //             else{
+    //                 previousCommandSucessfull = false;
+    //             }
+    //         }
+    //         if(connector == "or"){
+    //             if(previousCommandSucessfull){
+    //                 previousCommandSucessfull = false;
+    //             }
+    //             else{
+    //                 executeVector(subExec);
+    //                 previousCommandSucessfull = true;
+    //             }
+    //         }
+    //         connector = "semicolon";
             
-        // connector = //should be whatever was after the parentheses    
+    //     // connector = //should be whatever was after the parentheses    
             
             
-        }
+    //     }
 
+        if(hasParenthesis(v.at(i))){
+            return executeParenthesis(v, previousCommandSucessfull, connector);
+        }
         else if(hasSemicolon(v.at(i))){
             string temp;                                  //get rid of semicolon
             temp = v.at(i).substr(0, v.at(i).length() - 1);
@@ -438,14 +453,30 @@ void executeVector(vector<string> v){
         t++;
     }
     if(connector == "semicolon"){
-        e.executeStatement(lastCommand);
+        if(e.executeStatement(lastCommand)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     if(connector == "and" && previousCommandSucessfull){
-        e.executeStatement(lastCommand);
+        if(e.executeStatement(lastCommand)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
     if(connector == "or" && !previousCommandSucessfull){
-        e.executeStatement(lastCommand);
+        if(e.executeStatement(lastCommand)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
+    return true;
 }
 
 bool executeSemicolon(string input, string &newInput, string delim){
@@ -557,6 +588,143 @@ bool executeAnd(string input, string &newInput, string delim){
     
 }
 
+bool executeParenthesis(vector<string> v, bool previousCommandSucessfull, string connector){
+
+    // alright, we have the commands which has precedence somewhere in the string, the bool if previous command was successfull and the connector.
+    bool semi = false;
+    
+    unsigned int indexOfFirstParenthesis = 0;
+    
+    for(unsigned x = 0; x < v.size(); x++){
+        if(hasParenthesis(v.at(x))){
+            indexOfFirstParenthesis = x;
+            break;
+        }
+    }
+    if(indexOfFirstParenthesis != 0){
+        for(unsigned y = 0; y < indexOfFirstParenthesis; y++){
+            v.erase(v.begin());
+        }
+    }
+    
+    // Now, the first argument should have an opening parenthesis in it.
+    
+    vector<string> pVector;
+    
+    string fCommand = v.at(0);
+    fCommand = fCommand.substr(1, fCommand.size());  // remove '('
+    pVector.push_back(fCommand);
+    v.erase(v.begin());
+    
+    while(!v.empty() && !(hasClosingParenthesis(v.at(0)))){
+        string tempStr = v.front();
+        pVector.push_back(tempStr);
+        v.erase(v.begin());
+    }
+    if(!v.empty() && hasClosingParenthesis(v.at(0))){
+        string tempStr = v.front();
+        v.erase(v.begin());
+        if(hasSemicolon(tempStr)){     // has a semicolon and a ')'
+            tempStr = tempStr.substr(0, tempStr.size() -1);
+            semi = true;
+        }
+        tempStr = tempStr.substr(0, tempStr.size() - 1);  // remove the ')'
+        pVector.push_back(tempStr);
+    }
+    
+    // ////////////////////////
+    // for(unsigned i = 0; i < pVector.size(); i++){
+    //     cout << pVector.at(i) << " ";
+    // }
+    // cout << endl;
+    // cout << "argument size not in a parenthesis: " << v.size() << endl;
+    // cout << "connector: " << connector << endl;
+    // cout << "semi: ";
+    // if(semi){
+    //     printf("true");
+    // }
+    // else{
+    //     printf("false");
+    // }
+    // cout << endl;    
+    // cout << "previousCommandSucessfull: ";
+    // if(previousCommandSucessfull){
+    //     printf("true");
+    // }
+    // else{
+    //     printf("false");
+    // }
+    // cout << endl;
+    // cout<<"v: \n";
+    // for(unsigned i = 0; i < v.size(); i++){
+    //     cout << v.at(i) << " ";
+    // }
+    // cin.ignore(); // wait 
+    
+    // //////////////////////
+    
+    if(v.size() != 0){
+        //more stuff to do
+        string nextConnector = "will be overwritten";
+        
+        if(!semi){
+            if(v.at(0) == "&&"){
+                nextConnector = "and";
+            }
+            if(v.at(0) == "||"){
+                nextConnector = "or";
+            }
+        }
+        else{
+            nextConnector = "semicolon";
+        }
+        
+        bool temp = executeVector(pVector, previousCommandSucessfull,connector);
+        if(previousCommandSucessfull && nextConnector == "and"){
+            if(v.at(0) == "&&" && temp){
+                v.erase(v.begin());
+                return executeVector(v,temp,nextConnector);
+            }
+            else if(v.at(0) == "||" && !temp){
+                v.erase(v.begin());
+                return executeVector(v,temp,nextConnector);
+            }
+        }
+        else if(!previousCommandSucessfull && nextConnector == "or"){
+            if(v.at(0) == "&&" && temp){
+                v.erase(v.begin());
+                return executeVector(v,temp,nextConnector);
+            }
+            else if(v.at(0) == "||"&& !temp){
+                v.erase(v.begin());
+                return executeVector(v,temp,nextConnector);
+            }
+        }
+        else if(nextConnector == "semicolon"){
+            return executeVector(v,temp,nextConnector);
+        }
+        else{
+            
+        }
+    }
+    else{
+        if(previousCommandSucessfull && connector == "and"){
+            return executeVector(pVector,previousCommandSucessfull,connector);
+        }
+        else if(!previousCommandSucessfull && connector == "or"){
+            return executeVector(pVector,previousCommandSucessfull, connector);
+        }
+        else if(connector == "semicolon"){
+            return executeVector(pVector,previousCommandSucessfull, connector);
+        }
+        else{
+            // cout << "will not execute\n";
+        }
+    }
+    return true;  // not hit
+    
+}
+
 vector<char*> charstarToVector(char* str, string delim){
     vector<char*> result;
     char * pch = strtok (str, delim.c_str());
@@ -654,10 +822,15 @@ void displayShell2(){
         if(commentIndex != string::npos){   //rid of comments
             userInput = userInput.substr(0,commentIndex);
         }
+        // if(hasParenthesis(userInput)){
+        //     v = parseUI(userInput);
+        //     checkUserInput2(v);
+        //     executeParenthesis(v, true, "semicolon");
+        // }
         if(hasConnector(userInput)){
             v = parseUI(userInput);
             checkUserInput2(v);
-            executeVector(v);
+            executeVector(v,true,"semicolon");
         }
         else{
             char * str = new char[userInput.length() + 1];  // char array named str

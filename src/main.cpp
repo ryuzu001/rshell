@@ -12,6 +12,7 @@
 #include "execute.h"
 #include "connector.h"
 #include "test.h"
+#include "piping.h"
 
 
 using namespace std;
@@ -240,6 +241,7 @@ bool executeVector(vector<string> v, bool previousCommandSucessfull, string conn
     
     // parentheses = findOpenParentheses(v);
     
+
     
     
     for(unsigned i = 0; i < v.size(); i++){
@@ -815,22 +817,41 @@ void displayShell2(){
     vector<string> v;
     
     while(1){
+        string t1 = "|";      // need to use piping.cpp
+        string t2 = ">";
+        string t3 = "<";
+        string t4 = ">>";
+        
+        size_t tt1;
+        size_t tt2;
+        size_t tt3;
+        size_t tt4;
+    
         vector<char*> toExecute;
         printInfo();
         getline(cin, userInput);
         commentIndex = userInput.find(comment);
+        
+        tt1 = userInput.find(t1);
+        tt2 = userInput.find(t2);
+        tt3 = userInput.find(t3);
+        tt4 = userInput.find(t4);
+        
         if(commentIndex != string::npos){   //rid of comments
             userInput = userInput.substr(0,commentIndex);
         }
-        // if(hasParenthesis(userInput)){
-        //     v = parseUI(userInput);
-        //     checkUserInput2(v);
-        //     executeParenthesis(v, true, "semicolon");
-        // }
+        if(userInput == "exit"){
+            execute te;
+            te.exit_shell();
+        }        
         if(hasConnector(userInput)){
             v = parseUI(userInput);
             checkUserInput2(v);
             executeVector(v,true,"semicolon");
+        }
+        else if((tt1 != string::npos) || (tt2 != string::npos) || (tt3 != string::npos) || tt4 != string::npos){   //piping
+            piping te;
+            te.executeStatement(userInput);
         }
         else{
             char * str = new char[userInput.length() + 1];  // char array named str

@@ -1,0 +1,1 @@
+../bin/rshell < ioredirecting.txt

@@ -1,0 +1,1 @@
+../bin/rshell < piping.txt

@@ -1,0 +1,8 @@
+cat < newFile | tr A-Z a-z
+cat < newFile2 | tr a-z A-Z
+cat < newFile | tr A-Z a-z > newFile2
+cat < newFile | tee newFile3 > newFile2
+cat < newFile | tr a-z A-Z | tr A-Z a-z > newFile2
+echo A | tr A-Z a-z | tee newFile3 > newFile
+echo hello there | tr a-z A-Z | tee newFile2 > newFile
+cat < newFile | tr A-Z a-z | tee newFile4 | tr a-z A-Z > newFile5

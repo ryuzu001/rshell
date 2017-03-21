@@ -1,0 +1,1 @@
+../bin/rshell < io_piping.txt

@@ -18,6 +18,11 @@ class piping{
     void executeStatement(string);
     void execNoPipe(vector<char*>, int(&)[2]);
     void execPipe(vector<vector<char*> >, int(&)[2]);
+    void runPipe2(vector<vector<char*> >, int(&)[2]);
+    void runPipe3(vector<vector<char*> >, int(&)[2]);
+    void runPipe4(vector<vector<char*> >, int(&)[2]);
+    void runPipe5(vector<vector<char*> >, int(&)[2]);
+    void runPipe6(vector<vector<char*> >, int(&)[2]);
 };
 
 
